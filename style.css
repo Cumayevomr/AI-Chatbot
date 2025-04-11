@@ -112,3 +112,94 @@ body {
 .suggestions .suggestions-item:nth-child(4) span {
     color: #6f42c1;
 }
+
+/* Prompt container stylings */
+.prompt-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 16px 0;
+    background: var(--primary-color);
+}
+
+.container :is(.app-header, .suggestions) {
+    display: none;
+}
+
+.prompt-container :where(.prompt-wrapper, .promt-form, .prompt-actions) {
+    display: flex;
+    gap: 12px;
+    height: 56px;
+    align-items: center;
+}
+
+.prompt-wrapper .promt-form {
+    width: 100%;
+    height: 100%;
+    border-radius: 130px;
+    background: var(--secondary-color);
+}
+
+.promt-form .prompt-input {
+    height: 100%;
+    width: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    padding-left: 24px;
+    color: var(--text-color);
+}
+
+.promt-form .prompt-input::placeholder {
+    color: var(--placeholder-color);
+}
+
+.prompt-wrapper button {
+    width: 56px;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    transition: 0.3s ease;
+}
+
+.prompt-wrapper button:hover {
+    background: var(--secondary-hover-color);
+}
+
+.promt-form .prompt-actions {
+    gap: 7px;
+    margin-right: 7px;
+}
+
+.promt-form .prompt-actions button {
+    height: 45px;
+    width: 45px;
+}
+
+.promt-form #send-prompt-btn {
+    color: #fff;
+    display: none;
+    background: #1d7efd;
+}
+
+.promt-form .prmpt-input:valid ~ .prompt-actions #send-prompt-btn {
+    display: block;
+}
+
+.promt-form #send-prompt-btn:hover{
+    background: #0264e3;
+}
+
+.prompt-container .disclaimer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 16px 20px 0;
+    color: var(--placeholder-color);
+}
