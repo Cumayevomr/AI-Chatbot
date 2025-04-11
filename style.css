@@ -138,6 +138,16 @@ body {
     border: 1px solid var(--secondary-hover-color);
 }
 
+.chats-container .bot-message.loading img{
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .chats-container .message .message-text {
     padding: 3px 16px;
     word-wrap: break-word;
@@ -241,7 +251,7 @@ body {
     background: #1d7efd;
 }
 
-.promtp-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
+.prompt-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
     display: block;
 }
 

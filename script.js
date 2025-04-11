@@ -2,12 +2,12 @@ const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 
-let userMessage = "",
+let userMessage = "";
 
 // Function to create message elements
-const createMsgElement = (content, className) => {
+const createMsgElement = (content, ...classes) => {
     const div = document.createElement("div");
-    div.classList.add("message", className);
+    div.classList.add("message", ...classes);
     div.innerHTML = content;
     return div;
 }
@@ -15,8 +15,10 @@ const createMsgElement = (content, className) => {
 // Handle the form submistion
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    userMessage = promptInput.value.trim()
+    userMessage = promptInput.value.trim();
     if(!userMessage) return;
+
+    promptInput.value = "";
 
     // Generate user message HTML and add in the chats container
     const userMsgHtml = `<p class="message-text"></p>`;
@@ -28,7 +30,7 @@ const handleFormSubmit = (e) => {
     setTimeout(() => {
         // Generate bot message HTML and add in the chats container in 600ms
     const botMsgHtml = `<img src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" alt="avatar"><p class="message-text">Just a sec..</p>`;
-    const botMsgDiv = createMsgElement(botMsgHtml, "bot-message");
+    const botMsgDiv = createMsgElement(botMsgHtml, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
     }, 600);
 }
