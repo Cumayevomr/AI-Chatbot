@@ -7,6 +7,7 @@ const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 let userMessage = "";
+const chatHistory = [];
 
 // Function to create message elements
 const createMsgElement = (content, ...classes) => {
@@ -17,8 +18,19 @@ const createMsgElement = (content, ...classes) => {
 }
 
 const generateResponse = async () => {
+    // Add user message to the chat history
+    chatHistory.push({
+        role: "user",
+        parts: [{ text: userMessage }]
+    });
+
+
     try {
-        const response = await fetch();
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify()
+        });
     } catch {
 
     }
