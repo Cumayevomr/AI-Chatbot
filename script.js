@@ -17,21 +17,32 @@ const createMsgElement = (content, ...classes) => {
     return div;
 }
 
-const generateResponse = async () => {
+// Make the API call and generate the bot's response
+const generateResponse = async (botMsgHtml) => {
+    const textElement = botMsgHtml.querySelector(".message-text");
+
     // Add user message to the chat history
     chatHistory.push({
         role: "user",
         parts: [{ text: userMessage }]
     });
 
-
     try {
+        // Send the chat history to the API to get a response
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify()
+            body: JSON.stringify({ contents: chatHistory })
         });
+
+        const data = await response.json();
+        if(!response.ok) throw new Error (data.error.message);
+
+        // Process te response text and display it
+        const responseText = data.candidates[0].content.parts[0].text.replace(/\*\*([^*]+)\*\*/g, "$1").trim();
+        textElement.textContent = responseText;
     } catch {
+        console.log(error);
 
     }
 }
@@ -56,7 +67,7 @@ const handleFormSubmit = (e) => {
     const botMsgHtml = `<img src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" alt="avatar"><p class="message-text">Just a sec..</p>`;
     const botMsgDiv = createMsgElement(botMsgHtml, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
-    generateResponse();
+    generateResponse(botMsgHtml);
     }, 600);
 }
 
