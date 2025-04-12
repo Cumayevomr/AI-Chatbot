@@ -1,3 +1,4 @@
+const container = document.querySelector(".container");
 const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
@@ -17,6 +18,9 @@ const createMsgElement = (content, ...classes) => {
     return div;
 }
 
+// Scroll to the bottom of the container
+const scrollBottom = () => container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+
 // Simulate typing effect for bot responses
 typingEffect = (text, textElement, botMsgDiv) => {
     textElement.textContent = "";
@@ -28,6 +32,7 @@ typingEffect = (text, textElement, botMsgDiv) => {
         if(wordIndex < words.length) {
             textElement.textContent += (wordIndex === 0 ? "" : " " ) + words[wordIndex++];
             botMsgDiv.classList.remove("loading");
+            scrollBottom();
         } else {
             clearInterval(typingInterval);
         }
@@ -78,12 +83,14 @@ const handleFormSubmit = (e) => {
 
     userMsgDiv.querySelector(".message-text").textContent = userMessage;
     chatsContainer.appendChild(userMsgDiv);
+    scrollBottom();
 
     setTimeout(() => {
         // Generate bot message HTML and add in the chats container after 600ms
     const botMsgHtml = `<img src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" alt="avatar"><p class="message-text">Just a sec..</p>`;
     const botMsgDiv = createMsgElement(botMsgHtml, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
+    scrollBottom();
     generateResponse(botMsgDiv);
     }, 600);
 }
