@@ -17,9 +17,26 @@ const createMsgElement = (content, ...classes) => {
     return div;
 }
 
+// Simulate typing effect for bot responses
+typingEffect = (text, textElement, botMsgDiv) => {
+    textElement.textContent = "";
+    const words = text.split(" ");
+    let wordIndex = 0;
+
+    // Set an interval to type each word
+    const typingInterval = setInterval(() => {
+        if(wordIndex < words.length) {
+            textElement.textContent += (wordIndex === 0 ? "" : " " ) + words[wordIndex++];
+            botMsgDiv.classList.remove("loading");
+        } else {
+            clearInterval(typingInterval);
+        }
+    }, 40);
+}
+
 // Make the API call and generate the bot's response
-const generateResponse = async (botMsgHtml) => {
-    const textElement = botMsgHtml.querySelector(".message-text");
+const generateResponse = async (botMsgDiv) => {
+    const textElement = botMsgDiv.querySelector(".message-text");
 
     // Add user message to the chat history
     chatHistory.push({
@@ -38,9 +55,9 @@ const generateResponse = async (botMsgHtml) => {
         const data = await response.json();
         if(!response.ok) throw new Error (data.error.message);
 
-        // Process te response text and display it
+        // Process te response text and display with typing effect
         const responseText = data.candidates[0].content.parts[0].text.replace(/\*\*([^*]+)\*\*/g, "$1").trim();
-        textElement.textContent = responseText;
+        typingEffect(responseText, textElement, botMsgDiv);
     } catch {
         console.log(error);
 
@@ -67,7 +84,7 @@ const handleFormSubmit = (e) => {
     const botMsgHtml = `<img src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" alt="avatar"><p class="message-text">Just a sec..</p>`;
     const botMsgDiv = createMsgElement(botMsgHtml, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
-    generateResponse(botMsgHtml);
+    generateResponse(botMsgDiv);
     }, 600);
 }
 
