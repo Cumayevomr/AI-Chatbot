@@ -3,6 +3,7 @@ const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 const fileInput = promptForm.querySelector("#file-input");
+const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 
 // API Setup
 const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
@@ -101,8 +102,20 @@ fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if(!file) return;
 
-    console.log(file);
+    const isImage = file.type.startWith("image/");
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
     
+    reader.onload = (e) => {
+        fileInput.value = "";
+        fileUploadWrapper.querySelector(".file-preview").src = e.target.result;
+        fileUploadWrapper.classList.add("active", isImage ? "img-attached" : "file-attached");
+    }
+});
+
+// Cancel file upload
+document.querySelector("#cancel-file-btn").addEventListener("click", () => {
+    fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
