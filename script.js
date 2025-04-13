@@ -59,7 +59,8 @@ const generateResponse = async (botMsgDiv) => {
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ contents: chatHistory })
+            body: JSON.stringify({ contents: chatHistory }),
+            signal: controller.signal
         });
 
         const data = await response.json();
@@ -140,9 +141,11 @@ document.querySelector("#cancel-file-btn").addEventListener("click", () => {
     fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 });
 
-// Cancel file upload
+//Stop on going bot response
 document.querySelector("#stop-response-btn").addEventListener("click", () => {
     userData.file = {};
+    controller?.abort();
+    clearInterval(typingInterval);
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
