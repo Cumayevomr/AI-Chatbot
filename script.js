@@ -9,8 +9,8 @@ const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
-let userMessage = "";
-const chatHistory = [];
+const chatData = [];
+const chatHistory = {message: "", file: {} };
 
 // Function to create message elements
 const createMsgElement = (content, ...classes) => {
@@ -78,6 +78,7 @@ const handleFormSubmit = (e) => {
     if(!userMessage) return;
 
     promptInput.value = "";
+    userData.message = userMessage;
 
     // Generate user message HTML and add in the chats container
     const userMsgHtml = `<p class="message-text"></p>`;
@@ -102,7 +103,7 @@ fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if(!file) return;
 
-    const isImage = file.type.startWith("image/");
+    const isImage = file.type.startsWith("image/");
     const reader = new FileReader();
     reader.readAsDataURL(file);
     
