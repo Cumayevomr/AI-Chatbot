@@ -159,6 +159,14 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
     document.body.classList.remove("bot-responding");
 });
 
+    // Handle suggestions click
+    document.querySelectorAll(".suggestions-item").forEach(item => {
+        item.addEventListener("click", () => {
+            promptInput.value = item.querySelector(".text").textContent;
+            promptForm.dispatchEvent(new Event("submit"));
+        });
+    });
+
 //Toggle dark/light theme
 themeToggle.addEventListener("click", () => {
     const isLightTheme = document.body.classList.toggle("light-theme");

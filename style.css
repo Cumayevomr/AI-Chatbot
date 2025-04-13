@@ -221,7 +221,7 @@ body {
 }
 
 .container :is(.app-header, .suggestions) {
-    display: none;
+    /*display: none;*/
 }
 
 .prompt-container :where(.prompt-wrapper, .prompt-form, .prompt-actions) {
