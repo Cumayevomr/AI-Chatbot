@@ -4,6 +4,7 @@ const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
+const themeToggle = document.querySelector("#theme-toggle-btn");
 
 // API Setup
 const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
@@ -38,7 +39,7 @@ const scrollBottom = () => container.scrollTo({ top: container.scrollHeight, beh
         } else {
             clearInterval(typingInterval);
             botMsgDiv.classList.remove("loading");
-            document.body.classList.remove(".bot-responding");
+            document.body.classList.remove("bot-responding");
         }
     }, 40);
 }
@@ -76,7 +77,7 @@ const generateResponse = async (botMsgDiv) => {
         textElement.style.color = "#d62939";
         textElement.textContent = error.name === "AbortError" ? "Response generation stopped." : error.message;
         botMsgDiv.classList.remove("loading");
-        document.body.classList.remove(".bot-responding");
+        document.body.classList.remove("bot-responding");
     } finally {
         userData.file = {};
     }
@@ -156,6 +157,11 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
     chatHistory.length = 0;
     chatsContainer.innerHTML = "";
     document.body.classList.remove("bot-responding");
+});
+
+themeToggle.addEventListener("click", () => {
+    const isLightTheme = document.body.classList.toggle("light-theme");
+    themeToggle.textContent = isLightTheme ? "dark_mode" : "light_mode";
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
