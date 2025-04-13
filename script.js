@@ -91,7 +91,7 @@ const handleFormSubmit = (e) => {
 
     promptInput.value = "";
     userData.message = userMessage;
-    document.body.classList.add("bot-responding");
+    document.body.classList.add("bot-responding", "chats-active");
     fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 
     // Generate user message HTML with optional file attachment
@@ -156,16 +156,24 @@ document.querySelector("#stop-response-btn").addEventListener("click", () => {
 document.querySelector("#delete-chats-btn").addEventListener("click", () => {
     chatHistory.length = 0;
     chatsContainer.innerHTML = "";
-    document.body.classList.remove("bot-responding");
+    document.body.classList.remove("bot-responding", "chats-active");
 });
 
-    // Handle suggestions click
-    document.querySelectorAll(".suggestions-item").forEach(item => {
+// Handle suggestions click
+document.querySelectorAll(".suggestions-item").forEach(item => {
         item.addEventListener("click", () => {
             promptInput.value = item.querySelector(".text").textContent;
             promptForm.dispatchEvent(new Event("submit"));
         });
     });
+
+// Show/hide  controls for mobile on prompt input focus
+document.addEventListener("click", ({target }) => {
+    const wrapper = document.querySelector(".prompt-wrapper");
+    const shouldHide = target.classList.contains("prompt-input") || (wrapper.classList.contains
+    ("hide-controls") && (target.id === "add-file-btn" || target.id === "stop-response-btn"));
+    wrapper.classList.toggle("hide-controls", shouldHide);
+});
 
 //Toggle dark/light theme
 themeToggle.addEventListener("click", () => {

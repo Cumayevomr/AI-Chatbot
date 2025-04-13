@@ -186,7 +186,7 @@ body {
 
 .chats-container .user-message .img-attachment {
     width: 50%;
-    height: 20%;
+    height: 270px;
     margin-top: -7px;
     border-radius: 13px 3px 13px 13px;
 }
@@ -220,8 +220,8 @@ body {
     background: var(--primary-color);
 }
 
-.container :is(.app-header, .suggestions) {
-    /*display: none;*/
+body.chats-active .container :where(.app-header, .suggestions) {
+    display: none;
 }
 
 .prompt-container :where(.prompt-wrapper, .prompt-form, .prompt-actions) {
@@ -334,4 +334,25 @@ body.bot-responding .prompt-form #stop-response-btn {
     font-size: 0.9rem;
     padding: 16px 20px 0;
     color: var(--placeholder-color);
+}
+
+/* Responsive media query code for small screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 0 100px;
+    }
+    
+    .app-header :is(.heading, .sub-heading) {
+        font-size: 2rem;
+        line-height: 1.4;
+    }
+
+    .prompt-form .file-upload-wrapper.active #cancel-file-btn {
+        opacity: o;
+    }
+
+    .prompt-wrapper.hide-controls :where(#theme-toggle-btn, #delete-chats-btn) {
+        display: none;
+    }
+    
 }
