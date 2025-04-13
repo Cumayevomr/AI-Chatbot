@@ -74,7 +74,7 @@ const generateResponse = async (botMsgDiv) => {
 // Handle the form submistion
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    userMessage = promptInput.value.trim();
+    const userMessage = promptInput.value.trim();
     if(!userMessage) return;
 
     promptInput.value = "";
@@ -109,8 +109,12 @@ fileInput.addEventListener("change", () => {
     
     reader.onload = (e) => {
         fileInput.value = "";
+        const base64String = e.target.result.trim(",")[1]
         fileUploadWrapper.querySelector(".file-preview").src = e.target.result;
         fileUploadWrapper.classList.add("active", isImage ? "img-attached" : "file-attached");
+
+        // Store file data in userData obj
+        userData.file = { fileName: file.name, data: base64String, mime_type: file.type, isImage};
     }
 });
 
