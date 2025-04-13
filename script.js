@@ -91,7 +91,7 @@ const handleFormSubmit = (e) => {
 
     promptInput.value = "";
     userData.message = userMessage;
-    document.body.classList.add(".bot-responding");
+    document.body.classList.add("bot-responding");
     fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 
     // Generate user message HTML with optional file attachment
@@ -149,7 +149,14 @@ document.querySelector("#stop-response-btn").addEventListener("click", () => {
     controller?.abort();
     clearInterval(typingInterval);
     chatsContainer.querySelector(".bot-message-loading").classList.remove("loading");
-    document.body.classList.remove(".bot-responding");
+    document.body.classList.remove("bot-responding");
+});
+
+// Delete all chats
+document.querySelector("#delete-chats-btn").addEventListener("click", () => {
+    chatHistory.length = 0;
+    chatsContainer.innerHTML = "";
+    document.body.classList.remove("bot-responding");
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
