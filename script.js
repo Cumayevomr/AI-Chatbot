@@ -45,10 +45,12 @@ typingEffect = (text, textElement, botMsgDiv) => {
 const generateResponse = async (botMsgDiv) => {
     const textElement = botMsgDiv.querySelector(".message-text");
 
-    // Add user message to the chat history
+    // Add user message and file data to the chat history
     chatHistory.push({
         role: "user",
-        parts: [{ text: userMessage }]
+        parts: [{ text: userData.message}, ...(userData.file.data ? [{ inline_data: (({fileName, isImage, ...rest 
+
+        })  => rest) (userData.file) }] : [])]
     });
 
     try {
@@ -65,6 +67,9 @@ const generateResponse = async (botMsgDiv) => {
         // Process te response text and display with typing effect
         const responseText = data.candidates[0].content.parts[0].text.replace(/\*\*([^*]+)\*\*/g, "$1").trim();
         typingEffect(responseText, textElement, botMsgDiv);
+
+        chatHistory.push({
+            role: "user", parts: [{ text: userData.message}] });
     } catch {
         console.log(error);
 
