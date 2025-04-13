@@ -71,13 +71,12 @@ const generateResponse = async (botMsgDiv) => {
         const responseText = data.candidates[0].content.parts[0].text.replace(/\*\*([^*]+)\*\*/g, "$1").trim();
         typingEffect(responseText, textElement, botMsgDiv);
 
-        chatHistory.push({ role: "model", parts: [{ text: responseText }] });
-        
-        
-        console.log(chatHistory);
-        
+        chatHistory.push({ role: "model", parts: [{ text: responseText }] });        
     } catch (error) {
-        console.log(error);
+        textElement.style.color = "#d62939";
+        textElement.textContent = error.name === "AbortError" ? "Response generation stopped." : error.message;
+        botMsgDiv.classList.remove("loading");
+        document.body.classList.remove(".bot-responding");
     } finally {
         userData.file = {};
     }
@@ -87,7 +86,7 @@ const generateResponse = async (botMsgDiv) => {
 const handleFormSubmit = (e) => {
     e.preventDefault();
     const userMessage = promptInput.value.trim();
-    if(!userMessage) return;
+    if(!userMessage || document.body.classList.contains("bot-responding")) return;
 
     promptInput.value = "";
     userData.message = userMessage;
