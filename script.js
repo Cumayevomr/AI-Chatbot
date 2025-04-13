@@ -88,10 +88,14 @@ const handleFormSubmit = (e) => {
     promptInput.value = "";
     userData.message = userMessage;
 
-    // Generate user message HTML and add in the chats container
-    const userMsgHtml = `<p class="message-text"></p>`;
+    // Generate user message HTML with optional file attachment
+    const  userMsgHtml = `
+    <p class="message-text"></p>
+    ${userData.file.data ? (userData.file.isImage ? `<img src="data:${userData.file.mime_type};base64,$
+        {userData.file.data}" class=img=attachment" />` : `<p class="file-attachment"><span
+         class=material-symbols-rounded">description</span>${userData.file.fileName}</p>` ) : ""}
+    `;
     const userMsgDiv = createMsgElement(userMsgHtml, "user-message");
-
     userMsgDiv.querySelector(".message-text").textContent = userMessage;
     chatsContainer.appendChild(userMsgDiv);
     scrollBottom();
