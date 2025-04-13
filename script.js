@@ -9,6 +9,7 @@ const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
+let typingInterval, controller;
 const chatHistory = [];
 const userData = {message: "", file: {} };
 
@@ -30,7 +31,7 @@ const scrollBottom = () => container.scrollTo({ top: container.scrollHeight, beh
     let wordIndex = 0;
 
     // Set an interval to type each word
-    const typingInterval = setInterval(() => {
+    typingInterval = setInterval(() => {
         if(wordIndex < words.length) {
             textElement.textContent += (wordIndex === 0 ? "" : " " ) + words[wordIndex++];
             botMsgDiv.classList.remove("loading");
@@ -44,6 +45,7 @@ const scrollBottom = () => container.scrollTo({ top: container.scrollHeight, beh
 // Make the API call and generate the bot's response
 const generateResponse = async (botMsgDiv) => {
     const textElement = botMsgDiv.querySelector(".message-text");
+    controller = new AbortController();
 
     // Add user message and file data to the chat history
     chatHistory.push({
@@ -136,6 +138,11 @@ fileInput.addEventListener("change", () => {
 document.querySelector("#cancel-file-btn").addEventListener("click", () => {
     userData.file = {};
     fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
+});
+
+// Cancel file upload
+document.querySelector("#stop-response-btn").addEventListener("click", () => {
+    userData.file = {};
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
