@@ -96,5 +96,14 @@ const handleFormSubmit = (e) => {
     }, 600);
 }
 
+// Handle file input change (file upload)
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if(!file) return;
+
+    console.log(file);
+    
+});
+
 promptForm.addEventListener("submit", handleFormSubmit);
 promptForm.querySelector("#add-file-btn").addEventListener("click", () => fileInput.click());
