@@ -9,8 +9,8 @@ const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 const API_KEY = "AIzaSyAejtOFjizDmzDcaXZj5bkUbVQS5djkWew";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
-const chatData = [];
-const chatHistory = {message: "", file: {} };
+const chatHistory = [];
+const userData = {message: "", file: {} };
 
 // Function to create message elements
 const createMsgElement = (content, ...classes) => {
@@ -24,7 +24,7 @@ const createMsgElement = (content, ...classes) => {
 const scrollBottom = () => container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
 
 // Simulate typing effect for bot responses
-typingEffect = (text, textElement, botMsgDiv) => {
+    const typingEffect = (text, textElement, botMsgDiv) => {
     textElement.textContent = "";
     const words = text.split(" ");
     let wordIndex = 0;
@@ -48,9 +48,8 @@ const generateResponse = async (botMsgDiv) => {
     // Add user message and file data to the chat history
     chatHistory.push({
         role: "user",
-        parts: [{ text: userData.message}, ...(userData.file.data ? [{ inline_data: (({fileName, isImage, ...rest 
-
-        })  => rest) (userData.file) }] : [])]
+        parts: [{ text: userData.message}, ...(userData.file.data ? [{ inline_data: (({fileName, isImage, ...
+            rest })  => rest)(userData.file) }] : [])]
     });
 
     try {
@@ -68,11 +67,15 @@ const generateResponse = async (botMsgDiv) => {
         const responseText = data.candidates[0].content.parts[0].text.replace(/\*\*([^*]+)\*\*/g, "$1").trim();
         typingEffect(responseText, textElement, botMsgDiv);
 
-        chatHistory.push({
-            role: "user", parts: [{ text: userData.message}] });
-    } catch {
+        chatHistory.push({ role: "model", parts: [{ text: responseText }] });
+        
+        
+        console.log(chatHistory);
+        
+    } catch (error) {
         console.log(error);
-
+    } finally {
+        userData.file = {};
     }
 }
 
@@ -114,7 +117,7 @@ fileInput.addEventListener("change", () => {
     
     reader.onload = (e) => {
         fileInput.value = "";
-        const base64String = e.target.result.trim(",")[1]
+        const base64String = e.target.result.split(",")[1];
         fileUploadWrapper.querySelector(".file-preview").src = e.target.result;
         fileUploadWrapper.classList.add("active", isImage ? "img-attached" : "file-attached");
 
@@ -125,6 +128,7 @@ fileInput.addEventListener("change", () => {
 
 // Cancel file upload
 document.querySelector("#cancel-file-btn").addEventListener("click", () => {
+    userData.file = {};
     fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 });
 
